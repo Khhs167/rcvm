@@ -1,28 +1,45 @@
 #include "stdio.h"
 #include "rcvm_machine.h"
 #include "rcvm_bitconv.h"
+#include "rcvm_file.h"
 
 int main() {
+
     printf("rcvm - ReCT Virtual Machine\n");
 
-    static uint8_t file[] = {
-        // header
-        'R', 'C', 'V', 'M', // header.header
-        0, 0, 0, 0, 0, 0, 0, 0, // header.rom_size
-        0, 0, 0, // header.rcvm_compiled_version_(major/minor/subminor)
-        // ROM data
-        0, 1, 2, 3
-    };
+    static rcvm_header_t header;
+    static uint8_t file_rom[] = {
 
-    uint64_t size = sizeof(file) - sizeof(rcvm_header_t);
-    if(sizeof(rcvm_header_t) > sizeof(file)) size = 0;
-    rcvm_tob64(size, file + sizeof(uint8_t) * 4);
+    };
+    static rcvm_library_header_t library_header;
+    static rcvm_symbol_t library[] = {
+    };
+    header.header[0] = 'R';
+    header.header[1] = 'C';
+    header.header[2] = 'V';
+    header.header[3] = 'M';
+    header.file_size = sizeof(header) + sizeof(file_rom) + sizeof(library_header) + sizeof(library);
+    header.library_offset = sizeof(header) + sizeof(file_rom);
+    header.rcvm_compiled_version_major = 0;
+    header.rcvm_compiled_version_minor = 0;
+    header.rcvm_compiled_version_subminor = 0;
+
+    library_header.name = 0;
+    library_header.symbol_count = sizeof(library) / sizeof(library[0]);
+
 
     uint8_t read_file(uint64_t pos) {
-        return file[pos];
+        if(pos < sizeof(header))
+            return ((uint8_t*)&header)[pos];
+        if(pos < header.library_offset) 
+            return file_rom[pos - sizeof(header)];
+        if(pos < header.library_offset + sizeof(library_header))
+            return ((uint8_t*)&library_header)[pos - header.library_offset];
+
+        return ((uint8_t*)&library)[pos - (header.library_offset  + sizeof(library_header))];
     }
 
-    rcvm_machine_t* machine = rcvm_machine_create(read_file);
+    rcvm_file_t* rcvm_file = rcvm_file_load(read_file);
 
     return 0;
 }

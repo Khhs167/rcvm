@@ -1,12 +1,12 @@
 # ReCT Virtual Machine buildfile
 
-C_SRC:=$(wildcard src/*.c) $(wildcard vendor/*.c)
-H_SRC:=$(wildcard include/*.h) $(wildcard vendor/include/*.h)
+C_SRC:=$(wildcard src/*.c) $(wildcard src/lists/*.c)
+H_SRC:=$(wildcard include/*.h)
 
 C_OBJ:=$(patsubst %.c,%.o,$(C_SRC))
 
 CC:=gcc
-CFLAGS:=-g -Wall -Iinclude
+CFLAGS:=-g -Wall -Iinclude -Ivendor/include
 
 LD:=gcc
 LDFLAGS:=-g

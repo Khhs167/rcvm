@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _RCVM_CALLBACKS_H
+#define _RCVM_CALLBACKS_H
 
 #include "stdarg.h"
 
@@ -11,3 +12,5 @@ typedef void(*rcvm_log_callback)(const char* message, va_list args);
 
 void rcvm_log(const char* message, ...);
 void rcvm_set_log_callback(rcvm_log_callback callback);
+
+#endif

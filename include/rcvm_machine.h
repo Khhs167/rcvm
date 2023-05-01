@@ -1,7 +1,11 @@
-#pragma once
+#ifndef _RCVM_MACHINE_H
+#define _RCVM_MACHINE_H
+
+#include "stdint.h"
 
 #include "rcvm_header.h"
-#include "stdint.h"
+#include "rcvm_symbol.h"
+#include "rcvm_file.h"
 
 typedef enum rcvm_registers_e {
     REG_GWX = 0,
@@ -15,8 +19,6 @@ typedef enum rcvm_registers_e {
     REG_SB = 6,
     REG_ST = 7,
 } rcvm_registers_e;
-
-typedef uint8_t (*rcvm_rom_reader)(uint64_t);
 
 
 typedef struct rcvm_machine_core_t
@@ -47,10 +49,14 @@ typedef struct rcvm_machine_t
 
     // By default each machine has 16 cores, for a total of 16 threads
     rcvm_machine_core_t cores[16];
+    // 256 library descriptors isn't really a lot
+    rcvm_library_t libraries[256];
     
 } rcvm_machine_t;
 
 
-rcvm_machine_t* rcvm_machine_create(rcvm_rom_reader reader);
+rcvm_machine_t* rcvm_machine_create(rcvm_file_t* reader);
 void rcvm_machine_destroy(rcvm_machine_t* machine);
 void rcvm_machine_step(rcvm_machine_t* machine);
+
+#endif

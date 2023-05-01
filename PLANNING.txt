@@ -15,3 +15,9 @@ All values are big-endian when encoded
 External linkage:
     LDL => Load a library from a string and puts the ID of said library into the current cores LP
     LDS => Load a symbol from the library at LP, and resolves it for the machine to use
+
+File structure:
+    Header => Stores metadata 'n shit
+    ROM => Stores code and anything needed by the software
+    Library header => The library section stores all symbols in the library.
+    Symbol table => The symbols themselves 
