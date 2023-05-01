@@ -23,6 +23,13 @@ rcvm_machine_t* rcvm_machine_create(rcvm_rom_reader reader) {
         rcvm_throw_error("RCVM Binary compiled for more recent version of RCVM");
     }
     // Subminor shouldn't matter, as per versioning standards
+
+    machine->rom = malloc(machine->header.rom_size);
+    rcvm_log("Loading rom with size %lu", machine->header.rom_size);
+    for(int i = 0; i < machine->header.rom_size; i++) {
+        machine->rom[i] = reader(i + sizeof(rcvm_header_t));
+    }
+    rcvm_log("Loaded rom");
 }
 
 void rcvm_machine_destroy(rcvm_machine_t* machine) {

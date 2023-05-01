@@ -8,4 +8,4 @@ typedef struct rcvm_header_t {
     uint8_t rcvm_compiled_version_major;
     uint8_t rcvm_compiled_version_minor;
     uint8_t rcvm_compiled_version_subminor;
-} rcvm_header_t;
+} __attribute__((packed)) rcvm_header_t; // Anything stored in-file should be packed
