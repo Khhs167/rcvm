@@ -18,11 +18,9 @@ typedef enum rcvm_registers_e {
 
 typedef uint8_t (*rcvm_rom_reader)(uint64_t);
 
-typedef struct rcvm_machine_t
+
+typedef struct rcvm_machine_core_t
 {
-    rcvm_header_t header;
-    uint8_t* rom;
-    
     // One word => 32 bits
     // One dword => 64 bits
     uint32_t gwx; // General Word (Register) X
@@ -35,7 +33,23 @@ typedef struct rcvm_machine_t
 
     uint32_t sb; // Stack base
     uint32_t st; // Stack top
+
+    uint64_t pr; // Program pointer
+
+    uint8_t lp; // Library pointer, used to store the current working library
+
+    uint8_t enabled; // Is the core enabled(does it execute instructions?)
+} rcvm_machine_core_t;
+typedef struct rcvm_machine_t
+{
+    rcvm_header_t header;
+    uint8_t* rom;
+
+    // By default each machine has 16 cores, for a total of 16 threads
+    rcvm_machine_core_t cores[16];
+    
 } rcvm_machine_t;
+
 
 rcvm_machine_t* rcvm_machine_create(rcvm_rom_reader reader);
 void rcvm_machine_destroy(rcvm_machine_t* machine);

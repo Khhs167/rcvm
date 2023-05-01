@@ -11,3 +11,7 @@ What we need:
 Each instruction is 16 bits pre-data, and then whatever for arguments
 
 All values are big-endian when encoded
+
+External linkage:
+    LDL => Load a library from a string and puts the ID of said library into the current cores LP
+    LDS => Load a symbol from the library at LP, and resolves it for the machine to use
