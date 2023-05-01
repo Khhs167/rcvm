@@ -1,0 +1,9 @@
+The versioning of rcvm is based on schemantic versioning, but with a couple changes.
+It works as following:
+- Major versions => Denote non-backwards(nor forwards) compatible releases. 
+    If major versions differ between binary and rcvm machine, it won't work.
+- Minor versions => Denote backwards compatible releases, they may deprechate features or add new
+    functionaility, but something written for 6.0 should run in 6.9
+- Subminor versions => Denote forwards and backwards compatible releases, this is used for internal bug
+    fixes and safety improvements etc. Compatability checks should allow something to run no matter
+    the subminor versions. Undefined behaviour is allowed to change between subminor releases.

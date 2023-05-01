@@ -9,3 +9,5 @@ What we need:
  - External linkage
 
 Each instruction is 16 bits pre-data, and then whatever for arguments
+
+All values are big-endian when encoded
